@@ -1,4 +1,4 @@
-import torch
+
 import torch.nn as nn
 from connectivity import *
 from torch.utils.data import TensorDataset, DataLoader
