@@ -7,6 +7,15 @@ from scipy import stats
 from numpy import linalg
 
 def init_connectivity( N,input_size,output_size,device='cpu',radius=1.5):
+    '''
+    Initialize connectivity of RNN
+    :param N: network size
+    :param input_size: number of input channels
+    :param output_size: number of output channels
+    :param device: 'cpu' or 'cuda'
+    :param radius: spectral radius
+    :return: Connectivity and masks
+    '''
     Ne = int(N * 0.8)
     Ni = int(N * 0.2)
 
