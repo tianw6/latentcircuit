@@ -1,7 +1,6 @@
 # LatentCircuit
 ## Description
-Computational framework for fitting low-dimensional recurrent neural networks to heterogeneous neural activity and interpreting their parameters. Contains source code for the publication:
-C. Langdon, T. A. Engel bioRxiv 2022.01.23.477431; doi: https://doi.org/10.1101/2022.01.23.477431
+Computational framework for fitting low-dimensional recurrent neural networks to heterogeneous neural activity and interpreting their parameters. Contains source code for Langdon & Engel, "Latent circuit inference from heterogeneous neural responses during cognitive tasks".
 
 ## Installation
 - Clone the repository:
