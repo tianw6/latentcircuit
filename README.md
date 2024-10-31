@@ -9,7 +9,7 @@ Computational framework for fitting low-dimensional recurrent neural networks to
     ```
 - Install python packages
 ```python
-    pip install torch==2.41 torchvision==0.19.1 torchaudio==2.4.1 jupyter==1.1.1 pandas==2.0.3 scipy==1.10.1  seaborn==0.13.2
+    pip install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 jupyter==1.1.1 pandas==2.0.3 scipy==1.10.1  seaborn==0.13.2
 ```
 
 ## Getting started
