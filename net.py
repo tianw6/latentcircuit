@@ -8,10 +8,6 @@ from scipy import stats
 from numpy import linalg
 
 
-if torch.cuda.is_available():
-    device = 'cuda'
-else:
-    device = 'cpu'
 
 class Net(torch.nn.Module):
     # PyTorch module for implementing an RNN to be trained on cognitive tasks.
