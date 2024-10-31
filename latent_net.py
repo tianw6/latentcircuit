@@ -21,14 +21,14 @@ class LatentNet(torch.nn.Module):
 
         # Initialize connectivity layers
         self.recurrent_layer = nn.Linear(self.n, self.n, bias=False)
-        self.recurrent_layer.weight.data.normal_(mean=0., std=0.025).to(device=device)
+        self.recurrent_layer.weight.data.normal_(mean=0., std=0.025).to(device=self.device)
         self.input_layer = nn.Linear(self.input_size, self.n, bias=False)
-        self.input_layer.weight.data.normal_(mean=0.2, std=.1).to(device=device)
+        self.input_layer.weight.data.normal_(mean=0.2, std=.1).to(device=self.device)
         self.output_layer = nn.Linear(self.n, self.output_size, bias=False)
-        self.output_layer.weight.data.normal_(mean=.2, std=0.1).to(device=device)
+        self.output_layer.weight.data.normal_(mean=.2, std=0.1).to(device=self.device)
 
         # Initialize embedding matrix, q
-        self.a = torch.nn.Parameter(torch.rand(self.N, self.N, device=device), requires_grad=True)
+        self.a = torch.nn.Parameter(torch.rand(self.N, self.N, device=self.device), requires_grad=True)
         self.q = self.cayley_transform(self.a)
 
         # Apply connectivity masks to initialized connectivity
