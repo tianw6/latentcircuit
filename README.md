@@ -7,7 +7,7 @@ Computational framework for fitting low-dimensional recurrent neural networks to
     ```python
     git clone https://github.com/engellab/latentcircuit
     ```
-- Install python packages
+- Install python packages (Python 3.8)
 ```python
     pip install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 jupyter==1.1.1 pandas==2.0.3 scipy==1.10.1  seaborn==0.13.2
 ```
