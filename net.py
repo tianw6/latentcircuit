@@ -20,6 +20,7 @@ class Net(torch.nn.Module):
         self.output_size = output_size
         self.activation = activation
         self.dale = dale
+        self.device = 'cpu'
         
         # Initialize connectivity
         self.recurrent_layer = nn.Linear(self.n, self.n, bias=False)
@@ -28,7 +29,7 @@ class Net(torch.nn.Module):
 
         # Apply Dale's law and balance network
         if self.dale:
-            self.recurrent_layer.weight.data,self.input_layer.weight.data,self.output_layer.weight.data,self.dale_mask, self.output_mask, self.input_mask = init_connectivity(self.n,self.input_size,self.output_size,device='cpu',radius=1.5)
+            self.recurrent_layer.weight.data,self.input_layer.weight.data,self.output_layer.weight.data,self.dale_mask, self.output_mask, self.input_mask = init_connectivity(self.n,self.input_size,self.output_size,radius=1.5)
 
         # Apply connectivity masks
         self.connectivity_constraints()

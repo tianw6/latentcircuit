@@ -6,13 +6,12 @@ from scipy.sparse import random
 from scipy import stats
 from numpy import linalg
 
-def init_connectivity( N,input_size,output_size,device='cpu',radius=1.5):
+def init_connectivity( N,input_size,output_size,radius=1.5):
     '''
     Initialize connectivity of RNN
     :param N: network size
     :param input_size: number of input channels
     :param output_size: number of output channels
-    :param device: 'cpu' or 'cuda'
     :param radius: spectral radius
     :return: Connectivity and masks
     '''
@@ -56,12 +55,11 @@ def init_connectivity( N,input_size,output_size,device='cpu',radius=1.5):
     W_out[:, :Ne] = torch.tensor(random(output_size, Ne, density=1,
                                         data_rvs=stats.norm(scale=var, loc=mu_E).rvs).toarray()).float()
 
-    dale_mask = torch.sign(W_rec).to(device=device).float()
-    output_mask = (W_out != 0).to(device=device).float()
-    input_mask = (W_in != 0).to(device=device).float()
+    dale_mask = torch.sign(W_rec).float()
+    output_mask = (W_out != 0).float()
+    input_mask = (W_in != 0).float()
 
-    return W_rec.to(device=device).float(), W_in.to(device=device).float(), W_out.to(
-        device=device).float(), dale_mask, output_mask, input_mask
+    return W_rec.float(), W_in.float(), W_out.float(), dale_mask, output_mask, input_mask
 
 
 
