@@ -4,16 +4,13 @@ Computational framework for fitting low-dimensional recurrent neural networks to
 
 ## Installation
 - Clone the repository:
-
+    ```python
     git clone https://github.com/engellab/latentcircuit
-
-- Create a new conda environment from the latentcircuitenv.yaml file using:
-
-    conda env create -f latentcircuitenv.yaml
-
-- Activate the environment:
-
-    conda activate latentcircuitenv
+    ```
+- Install python packages
+```python
+    pip install torch torchvision torchaudio jupyter pandas scipy seaborn
+```
 
 ## Getting started
 The key parts of the code base are the two PyTorch modules LatentNet and Net, contained in the files latent_net.py and and net.py. The Net class implements an RNN which we use to train models on cognitive tasks. The LatentNet class implements
