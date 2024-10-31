@@ -42,13 +42,13 @@ class Net(torch.nn.Module):
         t = u.shape[1]
 
         # Initialize hidden states to zero.
-        states = torch.zeros(u.shape[0], 1, self.n, device=device)
+        states = torch.zeros(u.shape[0], 1, self.n, device=self.device)
         batch_size = states.shape[0]
 
         # Noise to be applied at each time step.
         noise = torch.sqrt(2 * self.alpha * self.sigma_rec ** 2) * torch.empty(batch_size, t, self.n).normal_(mean=0,
                                                                                                               std=1).to(
-            device=device)
+            device=self.device)
 
         # Loop over time steps
         for i in range(t - 1):
