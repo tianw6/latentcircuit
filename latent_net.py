@@ -39,13 +39,25 @@ class LatentNet(torch.nn.Module):
         # Input mask
         input_mask = torch.zeros_like(self.input_layer.weight.data)
         input_mask[:self.input_size, :self.input_size] = torch.eye(self.input_size)
-        self.input_layer.weight.data = input_mask * torch.relu(self.input_layer.weight.data)
+        
 
+        ###################### tian changed this 
+
+        # self.input_layer.weight.data = input_mask * torch.relu(self.input_layer.weight.data)
+        self.input_layer.weight.data = torch.relu(self.input_layer.weight.data)
+        ######################
+
+        
         # Output mask
         output_mask = torch.zeros_like(self.output_layer.weight.data)
         output_mask[-self.output_size:, -self.output_size:] = torch.eye(self.output_size)
-        self.output_layer.weight.data = output_mask * torch.relu(self.output_layer.weight.data)
 
+
+        ###################### tian changed this 
+        # self.output_layer.weight.data = output_mask * torch.relu(self.output_layer.weight.data)
+
+        self.output_layer.weight.data =  torch.relu(self.output_layer.weight.data)
+        ###########################
 
     def cayley_transform(self, a):
         # Tranform square matrix, a, into orthonormal matrix, q.

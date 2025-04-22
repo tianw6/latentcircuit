@@ -1,6 +1,6 @@
 
 import torch.nn as nn
-from connectivity import *
+from connectivity2 import *
 from torch.utils.data import TensorDataset, DataLoader
 import numpy as np
 #from scipy.sparse import random
@@ -9,10 +9,10 @@ from numpy import linalg
 
 
 
-class Net(torch.nn.Module):
+class Net2(torch.nn.Module):
     # PyTorch module for implementing an RNN to be trained on cognitive tasks.
     def __init__(self, n, alpha = .2, sigma_rec=0.15, input_size=6, output_size=2,dale=False,activation = torch.nn.ReLU() ):
-        super(Net, self).__init__()
+        super(Net2, self).__init__()
         self.alpha = torch.tensor(alpha)
         self.sigma_rec = torch.tensor(sigma_rec)
         self.n = n
@@ -29,7 +29,7 @@ class Net(torch.nn.Module):
 
         # Apply Dale's law and balance network
         if self.dale:
-            self.recurrent_layer.weight.data,self.input_layer.weight.data,self.output_layer.weight.data,self.dale_mask, self.output_mask, self.input_mask = init_connectivity(self.n,self.input_size,self.output_size,radius=1.5)
+            self.recurrent_layer.weight.data,self.input_layer.weight.data,self.output_layer.weight.data,self.dale_mask, self.output_mask, self.input_mask = init_connectivity2(self.n,self.input_size,self.output_size,radius=1.5)
 
         # Apply connectivity masks
         self.connectivity_constraints()
@@ -59,14 +59,24 @@ class Net(torch.nn.Module):
         return states
 
     def connectivity_constraints(self):
+
+        ####################### Tian comment this out
         # Constrain input and output to be positive
         self.input_layer.weight.data = torch.relu(self.input_layer.weight.data)
         self.output_layer.weight.data =  torch.relu(self.output_layer.weight.data)
 
+
+
         # Constrain network to satisfy Dale's law
         if self.dale:
-            self.input_layer.weight.data = self.input_mask * torch.relu(self.input_layer.weight.data)
-            self.output_layer.weight.data = self.output_mask * torch.relu(self.output_layer.weight.data)
+
+            # self.input_layer.weight.data = self.input_mask * torch.relu(self.input_layer.weight.data)
+            # self.output_layer.weight.data = self.output_mask * torch.relu(self.output_layer.weight.data)
+
+
+            self.input_layer.weight.data = self.input_mask * self.input_layer.weight.data
+            self.output_layer.weight.data = self.output_mask * self.output_layer.weight.data
+
             self.recurrent_layer.weight.data = torch.relu(
                 self.recurrent_layer.weight.data * self.dale_mask) * self.dale_mask
 
@@ -116,3 +126,4 @@ class Net(torch.nn.Module):
                     print('Epoch: {}/{}.............'.format(epoch, epochs), end=' ')
                     print("mse_z: {:.4f}".format(self.mse_z(x, z, mask).item()))
                 
+

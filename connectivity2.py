@@ -1,3 +1,4 @@
+
 import torch
 import numpy as np
 import torch
@@ -5,7 +6,7 @@ from scipy.sparse import random
 from scipy import stats
 from numpy import linalg
 
-def init_connectivity( N,input_size,output_size,radius=1.5):
+def init_connectivity2( N,input_size,output_size,radius=1.5):
     '''
     Initialize connectivity of RNN
     :param N: network size
@@ -14,6 +15,9 @@ def init_connectivity( N,input_size,output_size,radius=1.5):
     :param radius: spectral radius
     :return: Connectivity and masks
     '''
+
+
+
     Ne = int(N * 0.8)
     Ni = int(N * 0.2)
 
@@ -46,17 +50,68 @@ def init_connectivity( N,input_size,output_size,radius=1.5):
     spec_radius = np.max(np.absolute(w))
     W_rec = radius * W_rec / spec_radius
 
-    W_in = torch.zeros([N, input_size]).float()
-    W_in[:, :] = radius * torch.tensor(
-        random(N, input_size, density=1, data_rvs=stats.norm(scale=var, loc=mu_E).rvs).toarray()).float()
 
+    # W_in = torch.zeros([N, input_size]).float()
+    # W_in[:, :] = radius * torch.tensor(
+    #     random(N, input_size, density=1, data_rvs=stats.norm(scale=var, loc=mu_E).rvs).toarray()).float()
+
+    # W_out = torch.zeros([output_size, N])
+    # W_out[:, :Ne] = torch.tensor(random(output_size, Ne, density=1,
+    #                                     data_rvs=stats.norm(scale=var, loc=mu_E).rvs).toarray()).float()
+
+
+
+ 
+
+
+
+
+    ###################### Tian changed this part
+    W_in = torch.zeros([N, input_size]).float()
     W_out = torch.zeros([output_size, N])
-    W_out[:, :Ne] = torch.tensor(random(output_size, Ne, density=1,
-                                        data_rvs=stats.norm(scale=var, loc=mu_E).rvs).toarray()).float()
+    W_in = torch.rand(N, input_size) * 1-0.5
+    W_out[:, :Ne] = torch.rand(output_size, Ne) * 1-0.5
+
+
+    ######################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     dale_mask = torch.sign(W_rec).float()
     output_mask = (W_out != 0).float()
     input_mask = (W_in != 0).float()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     return W_rec.float(), W_in.float(), W_out.float(), dale_mask, output_mask, input_mask
 
