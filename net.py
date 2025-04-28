@@ -67,6 +67,9 @@ class Net(torch.nn.Module):
         if self.dale:
             self.input_layer.weight.data = self.input_mask * torch.relu(self.input_layer.weight.data)
             self.output_layer.weight.data = self.output_mask * torch.relu(self.output_layer.weight.data)
+            
+
+
             self.recurrent_layer.weight.data = torch.relu(
                 self.recurrent_layer.weight.data * self.dale_mask) * self.dale_mask
 

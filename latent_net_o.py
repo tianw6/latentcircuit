@@ -1,3 +1,5 @@
+# the original latent_net code 
+
 import torch.nn as nn
 from connectivity import *
 from torch.utils.data import TensorDataset, DataLoader
@@ -38,49 +40,13 @@ class LatentNet(torch.nn.Module):
         # These masks are applied after each gradient update during training.
         # Input mask
         input_mask = torch.zeros_like(self.input_layer.weight.data)
-        # input_mask[:self.input_size, :self.input_size] = torch.eye(self.input_size)
-        # Tian changed this: redefine input_mask
         input_mask[:self.input_size, :self.input_size] = torch.eye(self.input_size)
-        input_mask[4,2] = 1
-        input_mask[5,3] = 1
-
-
-        
-
-        ###################### tian changed this 
-
         self.input_layer.weight.data = input_mask * torch.relu(self.input_layer.weight.data)
-        # self.input_layer.weight.data = torch.relu(self.input_layer.weight.data)
-        ######################
 
-        
         # Output mask
         output_mask = torch.zeros_like(self.output_layer.weight.data)
         output_mask[-self.output_size:, -self.output_size:] = torch.eye(self.output_size)
-
-
-        ###################### tian changed this 
         self.output_layer.weight.data = output_mask * torch.relu(self.output_layer.weight.data)
-
-        # self.output_layer.weight.data =  torch.relu(self.output_layer.weight.data)
-        ###########################
-
-
-        # ###################### tian changed this 
-        # recurrent_mask = torch.zeros_like(self.recurrent_layer.weight.data)
-        # recurrent_mask[2:,2:] = 1
-        # recurrent_mask[2,0] = 1
-        # recurrent_mask[4,0] = 1
-        # recurrent_mask[3,1] = 1
-        # recurrent_mask[5,1] = 1
-
-
-        # self.recurrent_layer.weight.data = recurrent_mask * self.recurrent_layer.weight.data
-        # self.recurrent_layer.weight.data[2,0] = -torch.abs(self.recurrent_layer.weight.data[2,0])
-        # self.recurrent_layer.weight.data[4,0] = torch.abs(self.recurrent_layer.weight.data[4,0])
-        # self.recurrent_layer.weight.data[3,1] = torch.abs(self.recurrent_layer.weight.data[3,1])
-        # self.recurrent_layer.weight.data[5,1] = -torch.abs(self.recurrent_layer.weight.data[5,1])
-
 
 
     def cayley_transform(self, a):
