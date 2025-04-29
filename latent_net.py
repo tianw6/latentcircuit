@@ -34,15 +34,77 @@ class LatentNet(torch.nn.Module):
         # Apply connectivity masks to initialized connectivity
         self.connectivity_masks()
 
+    # def connectivity_masks(self):
+    #     # These masks are applied after each gradient update during training.
+    #     # Input mask
+    #     input_mask = torch.zeros_like(self.input_layer.weight.data)
+    #     # input_mask[:self.input_size, :self.input_size] = torch.eye(self.input_size)
+
+
+    #     # Tian changed this: redefine input_mask
+    #     input_mask[:self.input_size, :self.input_size] = torch.eye(self.input_size)
+    #     input_mask[4,2] = 1
+    #     input_mask[5,3] = 1
+
+
+        
+
+    #     ###################### tian changed this 
+
+    #     self.input_layer.weight.data = input_mask * torch.relu(self.input_layer.weight.data)
+    #     # self.input_layer.weight.data = torch.relu(self.input_layer.weight.data)
+    #     ######################
+
+        
+    #     # Output mask
+    #     output_mask = torch.zeros_like(self.output_layer.weight.data)
+    #     output_mask[-self.output_size:, -self.output_size:] = torch.eye(self.output_size)
+
+
+    #     ###################### tian changed this 
+    #     self.output_layer.weight.data = output_mask * torch.relu(self.output_layer.weight.data)
+    #     # self.output_layer.weight.data =  torch.relu(self.output_layer.weight.data)
+    #     ###########################
+
+
+    #     # ###################### tian changed this 
+    #     recurrent_mask = torch.ones_like(self.recurrent_layer.weight.data)
+    #     # recurrent_mask[6:8,0:2] = 0
+    #     recurrent_mask[0:2,2:] = 0
+    #     recurrent_mask[:6,6:] = 0
+
+
+
+    #     self.recurrent_layer.weight.data = recurrent_mask * self.recurrent_layer.weight.data
+
+    #     temp = torch.tensor([
+    #         [ 1, -1,  1, -1],
+    #         [-1,  1, -1,  1],
+    #         [ 1, -1,  1, -1],
+    #         [-1,  1, -1,  1]
+    #     ])
+    #     temp_o = torch.tensor([
+    #         [ 1, -1],
+    #         [-1,  1]
+    #     ])
+
+    #     self.recurrent_layer.weight.data[2:6,2:6] = temp*torch.abs(self.recurrent_layer.weight.data[2:6,2:6])
+    #     self.recurrent_layer.weight.data[6:,6:] = temp_o*torch.abs(self.recurrent_layer.weight.data[6:,6:])
+
+
+
+
+
     def connectivity_masks(self):
         # These masks are applied after each gradient update during training.
         # Input mask
         input_mask = torch.zeros_like(self.input_layer.weight.data)
-        # input_mask[:self.input_size, :self.input_size] = torch.eye(self.input_size)
-        # Tian changed this: redefine input_mask
         input_mask[:self.input_size, :self.input_size] = torch.eye(self.input_size)
-        input_mask[4,2] = 1
-        input_mask[5,3] = 1
+
+        # input_mask[5,0] = 1
+        # input_mask[4,1] = 1
+
+
 
 
         
@@ -58,28 +120,41 @@ class LatentNet(torch.nn.Module):
         output_mask = torch.zeros_like(self.output_layer.weight.data)
         output_mask[-self.output_size:, -self.output_size:] = torch.eye(self.output_size)
 
+        output_mask[0,1] = 1
+        output_mask[1,0] = 1
+
+
 
         ###################### tian changed this 
         self.output_layer.weight.data = output_mask * torch.relu(self.output_layer.weight.data)
-
         # self.output_layer.weight.data =  torch.relu(self.output_layer.weight.data)
         ###########################
 
 
         # ###################### tian changed this 
-        # recurrent_mask = torch.zeros_like(self.recurrent_layer.weight.data)
-        # recurrent_mask[2:,2:] = 1
-        # recurrent_mask[2,0] = 1
-        # recurrent_mask[4,0] = 1
-        # recurrent_mask[3,1] = 1
-        # recurrent_mask[5,1] = 1
+        recurrent_mask = torch.ones_like(self.recurrent_layer.weight.data)
 
 
-        # self.recurrent_layer.weight.data = recurrent_mask * self.recurrent_layer.weight.data
-        # self.recurrent_layer.weight.data[2,0] = -torch.abs(self.recurrent_layer.weight.data[2,0])
-        # self.recurrent_layer.weight.data[4,0] = torch.abs(self.recurrent_layer.weight.data[4,0])
-        # self.recurrent_layer.weight.data[3,1] = torch.abs(self.recurrent_layer.weight.data[3,1])
-        # self.recurrent_layer.weight.data[5,1] = -torch.abs(self.recurrent_layer.weight.data[5,1])
+
+
+        self.recurrent_layer.weight.data = recurrent_mask * self.recurrent_layer.weight.data
+
+
+        temp_o = torch.tensor([
+            [ 1, -1],
+            [-1,  1]
+        ])
+
+        self.recurrent_layer.weight.data[4:,4:] = temp_o*torch.abs(self.recurrent_layer.weight.data[4:,4:])
+
+
+
+
+
+
+
+
+
 
 
 
